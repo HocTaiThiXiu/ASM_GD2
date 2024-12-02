@@ -1,0 +1,60 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<WebApplication1.ViewModel.GioHangViewModel>
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "SanPham";
+}
+
+<h1>Sản phẩm</h1>
+<form class="form-inline" asp-action="Index" method="post">
+    <input class="form-control mr-2" type="search" placeholder="Tìm kiếm..." aria-label="Search" name="key">
+    <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+</form>
+@if (HttpContextAccessor.HttpContext.Session.GetString("UserName") == "Admin")
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @{
+        if (Model == null)
+        {
+            <p class="text-center">@ViewBag.Message</p>
+        }
+        else
+        {
+
+            decimal total = 0;
+            <form asp-action="ThanhToan">
+                @foreach (var item in Model)
+                {
+                    total += item.TongTien;
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="~/img/@item.ImgUrl" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.TenSanPham</h5>
+                                <p class="card-text">Price: @item.Gia VND</p>
+                                <br />
+                                <p>Số lượng: @item.SoLuong</p>
+                                <br />
+                                <p>Giá: @item.Gia</p>
+                                <br />
+                                <p>Thành tiền: @item.TongTien</p>
+                                <a asp-action="Remove" asp-route-idSanPham="@item.Id">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <h3>Tổng tiền: @total</h3>
+
+                <button class="btn btn-primary" type="submit">Thanh toán</button>
+            </form>
+        }
+    }
+</div>
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

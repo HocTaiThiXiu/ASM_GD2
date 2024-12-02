@@ -1,0 +1,42 @@
+﻿@model ICollection<WebApplication1.ViewModel.ChiTietHoaDonViewModel>
+@{
+    ViewData["Title"] = "SanPham";
+}
+
+<h1>Hóa đơn</h1>
+<br />
+<p>Ngày tạo: @ViewBag.NgayTao</p>
+<br />
+<h2>Danh sách sản phẩm:</h2>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Thành tiền
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenSanPham)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoLuong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThanhTien)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <h2>Thành tiền: @ViewBag.ThanhTien</h2>
